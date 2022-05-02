@@ -9,15 +9,16 @@ const socket = io.connect('http://localhost:8080', { transports: ['websocket'] }
 function App() {
 
   const [ username, setUsername ] = useState("");
-  const [ room, setRoom ] = useState("");
+  // const [ room, setRoom ] = useState("");
   const [ showChat, setShowChat ] = useState( false );
 
   // UNIRSE A SALA
   const joinRoom = () => {
-    if ( username !== "" && room !== "" ) {
+    if ( username !== "" ) {
 
       // UNIRSE A SALA CON EVENTO join-room
-      socket.emit( 'join-room', { username, room } );
+      socket.emit( 'join-room', { username } );
+      // socket.emit( 'join-room', { username, room } );
 
       // MOSTRAR CHAT
       setShowChat( true );
@@ -36,27 +37,28 @@ function App() {
 
       <div className='joinChatContainer' >
 
-        <h3>Join a Chat</h3>
+        <h3>Random Chat</h3>
+        <p> Entra a una sala al azar y habla con personas </p>
 
         {/* CAMBIAR VALOR DE USERNAME AL REALIZAR CAMBIOS EN INPUT */}
-        <input type="text" placeholder="Luis..." 
+        <input type="text" placeholder="Nombre de Usuario" 
         onChange={( event ) => {
           setUsername( event.target.value )
         }}/>
 
-        {/* CAMBIAR VALOR DE ROOM AL REALIZAR CAMBIOS EN INPUT */}
+        {/* CAMBIAR VALOR DE ROOM AL REALIZAR CAMBIOS EN INPUT
         <input type="text" placeholder="Room ID..." 
         onChange={( event ) => {
           setRoom( event.target.value )
-        }}/>
+        }}/> */}
 
-        <button onClick={ joinRoom }> Join A Room</button>        
+        <button onClick={ joinRoom }> Unirse a una sala</button>        
 
       </div> )
 
       : (        
 
-      <Chat socket={ socket } username={ username } room={ room } />
+      <Chat socket={ socket } username={ username } />
 
       )}
     </div>
