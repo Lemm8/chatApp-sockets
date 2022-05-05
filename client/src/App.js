@@ -9,16 +9,20 @@ const socket = io.connect('http://localhost:8080', { transports: ['websocket'] }
 function App() {
 
   const [ username, setUsername ] = useState("");
-  // const [ room, setRoom ] = useState("");
+  const [ numPersonas, setNumPersonas ] = useState(0);
+  const [ room, setRoom ] = useState("");
   const [ showChat, setShowChat ] = useState( false );
 
   // UNIRSE A SALA
-  const joinRoom = () => {
+  const joinRoom = ( numPersonas ) => {
     if ( username !== "" ) {
 
+      setNumPersonas( numPersonas );
+
       // UNIRSE A SALA CON EVENTO join-room
-      socket.emit( 'join-room', { username } );
-      // socket.emit( 'join-room', { username, room } );
+      socket.emit( 'join-room', { username, numPersonas }, ( response ) => {
+        setRoom( response );
+      });
 
       // MOSTRAR CHAT
       setShowChat( true );
@@ -52,13 +56,15 @@ function App() {
           setRoom( event.target.value )
         }}/> */}
 
-        <button onClick={ joinRoom }> Unirse a una sala</button>        
+        <button onClick={ () => joinRoom( 2 ) }> Unirse a una sala de 2</button>        
+        <button onClick={ () => joinRoom( 3 ) }> Unirse a una sala de 3</button>        
+        <button onClick={ () => joinRoom( 4 ) }> Unirse a una sala de 4</button>        
 
       </div> )
 
       : (        
 
-      <Chat socket={ socket } username={ username } />
+      <Chat socket={ socket } username={ username } room={ room } />
 
       )}
     </div>

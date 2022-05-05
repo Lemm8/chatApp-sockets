@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
 // RECIBIR PROP SOCKET
-function Chat({ socket, username }) {
+function Chat({ socket, username, room }) {
 
     const [ currentMsg, setCurrentMsg ] = useState("");
     const [ msgList, setMsgList ] = useState([]);
@@ -12,12 +12,12 @@ function Chat({ socket, username }) {
 
             const mensaje = {
                 username, 
+                room,
                 msg: currentMsg,
                 time: new Date( Date.now() ).getHours() 
                         + ":" + 
                       new Date( Date.now() ).getMinutes()
             };
-
             await socket.emit( 'send-msg', mensaje );
             setMsgList((list) => [...list, mensaje]);
             setCurrentMsg("");
