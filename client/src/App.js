@@ -9,18 +9,15 @@ const socket = io.connect('http://localhost:8080', { transports: ['websocket'] }
 function App() {
 
   const [ username, setUsername ] = useState("");
-  const [ numPersonas, setNumPersonas ] = useState(0);
-  const [ room, setRoom ] = useState("");
+  const [ room, setRoom ] = useState(0);
   const [ showChat, setShowChat ] = useState( false );
 
   // UNIRSE A SALA
-  const joinRoom = ( numPersonas ) => {
+  const joinRoom = ( room ) => {
     if ( username !== "" ) {
-
-      setNumPersonas( numPersonas );
-
+      setRoom( room );
       // UNIRSE A SALA CON EVENTO join-room
-      socket.emit( 'join-room', { username, numPersonas }, ( response ) => {
+      socket.emit( 'join-room', { username, room }, ( response ) => {
         setRoom( response );
       });
 
